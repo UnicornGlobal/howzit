@@ -64,6 +64,11 @@ class User extends BaseModel implements
         'confirmed',
     ];
 
+    public function credentials()
+    {
+        return $this->hasMany(Credentials::class);
+    }
+
     // Verification status
     public function getConfirmedAttribute()
     {

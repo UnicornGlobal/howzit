@@ -3,6 +3,7 @@
 use App\Credentials;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Webpatser\Uuid\Uuid;
 
 class MailCredentials extends Seeder
@@ -21,7 +22,7 @@ class MailCredentials extends Seeder
             'user_id' => 2,
             'provider_id' => 1,
             'username' => 'mailgun_username',
-            'secret' => '59095b71-9f52-41f1-9211-46da331b8b02',
+            'secret' => Crypt::encrypt('59095b71-9f52-41f1-9211-46da331b8b02'),
             'domain' => 'howzit',
             'mail_from_address' => 'test@howzit.com',
             'mail_from_name' => 'Howzit Seed',

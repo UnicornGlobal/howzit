@@ -96,12 +96,24 @@ $router->group(
                 return $router->app->version();
             });
 
+            /**
+             * Credentials
+             */
             $router->group(['prefix' => 'users/credentials', 'middleware' => ['role:user']], function () use ($router) {
                 $router->post('', 'CredentialsController@addCredentials');
                 $router->put('/{credentialId}', 'CredentialsController@editCredentials');
                 $router->get('', 'CredentialsController@getAllCredentials');
                 $router->get('/{credentialId}', 'CredentialsController@getCredentials');
                 $router->delete('', 'CredentialsController@deleteCredentials');
+            });
+
+            /**
+             * Forms
+             */
+            $router->group(['prefix' => 'forms', 'middleware' => ['role:user']], function () use ($router) {
+                $router->post('', 'FormController@addForm');
+                $router->get('', 'FormController@getAllForms');
+                $router->get('/{formId}', 'FormController@getForm');
             });
 
             /**

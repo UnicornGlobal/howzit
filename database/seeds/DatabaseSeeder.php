@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('Roles');
         $this->call('Users');
+        $this->call('MailCredentials');
+        $this->call('MailProviders');
     }
 }

@@ -11,7 +11,7 @@ class UserControllerTest extends TestCase
 
     public function testGetUser()
     {
-        $user = factory('App\User')->make();
+        $user = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
 
         // The test user in our seed
         $this->actingAs($user)->get('/api/users/4BFE1010-C11D-4739-8C24-99E1468F08F6');
@@ -69,7 +69,7 @@ class UserControllerTest extends TestCase
 
     public function testGetEmptyUser()
     {
-        $user = factory('App\User')->make();
+        $user = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
 
         // The test user in our seed
         $this->actingAs($user)->get('/api/users/0');
@@ -81,7 +81,7 @@ class UserControllerTest extends TestCase
 
     public function testGetBadUser()
     {
-        $user = factory('App\User')->make();
+        $user = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
 
         // The test user in our seed
         $this->actingAs($user)->get('/api/users/4BFE1010-C11D-4739-8C24-000000000000');
@@ -93,7 +93,7 @@ class UserControllerTest extends TestCase
 
     public function testGetBadUserFormat()
     {
-        $user = factory('App\User')->make();
+        $user = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
 
         // The test user in our seed
         $this->actingAs($user)->get('/api/users/xxx');
@@ -107,6 +107,7 @@ class UserControllerTest extends TestCase
     {
         // Get the test user
         $user = User::where('_id', '4BFE1010-C11D-4739-8C24-99E1468F08F6')->first();
+        $adminUser = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
         $this->assertEquals('Test', $user->first_name);
         $this->assertEquals('User', $user->last_name);
 
@@ -116,7 +117,7 @@ class UserControllerTest extends TestCase
             'lastName' => 'Changed',
         ]);
 
-        $this->actingAs($user)->get('/api/users/4BFE1010-C11D-4739-8C24-99E1468F08F6');
+        $this->actingAs($adminUser)->get('/api/users/4BFE1010-C11D-4739-8C24-99E1468F08F6');
 
         $resultObject = json_decode($this->response->getContent());
         $resultArray = json_decode($this->response->getContent(), true);

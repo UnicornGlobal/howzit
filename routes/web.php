@@ -120,8 +120,11 @@ $router->group(
              */
             $router->get('/me', 'UserController@getSelf');
             $router->post('/users/change-password', 'UserController@changePassword');
-            $router->get('/users/{userId}', 'UserController@getUserById');
             $router->post('/users/{userId}', 'UserController@updateUserByUUID');
+
+            $router->group(['middleware' => ['role:admin']], function () use ($router) {
+                $router->get('/users/{userId}', 'UserController@getUserById');
+            });
         });
     }
 );

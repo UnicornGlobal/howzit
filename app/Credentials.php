@@ -13,6 +13,13 @@ class Credentials extends BaseModel
 
     protected $hidden = [
         'id',
+        'user_id',
+        'provider_id',
+        'secret',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'deleted_at',
     ];
 
     public function user()

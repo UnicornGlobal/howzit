@@ -21,7 +21,7 @@ class CredentialsController extends Controller
                 'username' => 'required|string',
                 'secret' => 'required|string',
                 'domain' => 'required|string',
-                'provider_id' => ['required', 'exists:providers'],
+                'provider_id' => ['required', 'exists:providers,_id'],
                 'mail_from_address' => 'required|string',
                 'mail_from_name' => 'required|string',
             ]);
@@ -51,7 +51,7 @@ class CredentialsController extends Controller
 
     public function getAllCredentials()
     {
-        $credentials = Auth::user()->credentials()->all();
+        $credentials = Auth::user()->credentials()->get();
         return response()->json(['credentials' => $credentials], 200);
     }
 
@@ -60,10 +60,10 @@ class CredentialsController extends Controller
         $credential = Credentials::loadFromUuid($credentialId);
 
         if (Auth::user()->id !== $credential->user->id) {
-            return response()->json(['error' => 'Invalid credential ID']);
+            return response()->json(['error' => 'Invalid Credentials ID'], 500);
         }
 
-        return response()->json(['credentials' => $credential], 200);
+        return response()->json($credential, 200);
     }
 
     public function editCredentials(Request $request, $credentialId)
@@ -74,7 +74,7 @@ class CredentialsController extends Controller
                 'username' => 'required|string',
                 'secret' => 'required|string',
                 'domain' => 'required|string',
-                'mail_from_address' => 'required|string',
+                'mail_from_address' => 'required|string|email',
                 'mail_from_name' => 'required|string',
             ]);
         } catch (ValidationException $e) {

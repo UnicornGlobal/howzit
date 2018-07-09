@@ -18,8 +18,6 @@ class RegistrationController extends BaseController
     private $requiredFields = [
         'username',
         'password',
-        'firstName',
-        'lastName',
         'email'
     ];
 
@@ -28,16 +26,12 @@ class RegistrationController extends BaseController
         $details = $request->only(
             'username',
             'password',
-            'firstName',
-            'lastName',
             'email'
         );
 
         $this->validate($request, [
             'username' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
-            'firstName' => 'required|string',
-            'lastName' => 'required|string',
             'email' => 'required|email|distinct|unique:users',
         ]);
 

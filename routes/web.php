@@ -80,22 +80,6 @@ $router->group(
             $router->post('/reset/{token}', 'ResetController@postReset');
         });
 
-        $router->group(['prefix' => 'roles', 'middleware' => ['role:admin']], function () use ($router) {
-            $router->get('/{roleId}/users', 'RolesController@getUsersForRole');
-            $router->get('/{roleId}', 'RolesController@getRole');
-            $router->get('/', 'RolesController@getRoles');
-            $router->post('/{roleId}', 'RolesController@createRole');
-            $router->delete('/{roleId}', 'RolesController@deleteRole');
-            $router->post('/{roleId}/activate', 'RolesController@activateRole');
-            $router->post('/{roleId}/deactivate', 'RolesController@deactivateRole');
-        });
-
-        $router->group(['prefix' => 'users', 'middleware' => ['role:admin']], function () use ($router) {
-            $router->get('/{id}/roles', 'UserController@getUserRoles');
-            $router->post('/{id}/roles/assign/{roleId}', 'UserController@assignRole');
-            $router->post('/{id}/roles/revoke/{roleId}', 'UserController@revokeRole');
-        });
-
         /**
          * What you set this throttle to depends on your use case.
          * JWT refresh
@@ -112,6 +96,25 @@ $router->group(
                 return $router->app->version();
             });
 
+            /**
+             * Roles
+             */
+            $router->group(['prefix' => 'roles', 'middleware' => ['role:admin']], function () use ($router) {
+                $router->get('/{roleId}/users', 'RolesController@getUsersForRole');
+                $router->get('/{roleId}', 'RolesController@getRole');
+                $router->get('/', 'RolesController@getRoles');
+                $router->post('/{roleId}', 'RolesController@createRole');
+                $router->delete('/{roleId}', 'RolesController@deleteRole');
+                $router->post('/{roleId}/activate', 'RolesController@activateRole');
+                $router->post('/{roleId}/deactivate', 'RolesController@deactivateRole');
+            });
+
+            $router->group(['prefix' => 'users', 'middleware' => ['role:admin']], function () use ($router) {
+                $router->get('/{id}/roles', 'UserController@getUserRoles');
+                $router->post('/{id}/roles/assign/{roleId}', 'UserController@assignRole');
+                $router->post('/{id}/roles/revoke/{roleId}', 'UserController@revokeRole');
+            });
+            
             /**
              * Users
              */

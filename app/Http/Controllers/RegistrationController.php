@@ -15,23 +15,22 @@ use Webpatser\Uuid\Uuid;
 
 class RegistrationController extends BaseController
 {
-    private $requiredFields = [
-        'username',
-        'password',
-        'email'
-    ];
 
     public function registerEmail(Request $request)
     {
         $details = $request->only(
             'username',
             'password',
+            'firstName',
+            'lastName',
             'email'
         );
 
         $this->validate($request, [
             'username' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
             'email' => 'required|email|distinct|unique:users',
         ]);
 

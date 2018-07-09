@@ -18,8 +18,6 @@ class RegistrationController extends BaseController
     private $requiredFields = [
         'username',
         'password',
-        'firstName',
-        'lastName',
         'email'
     ];
 
@@ -28,20 +26,14 @@ class RegistrationController extends BaseController
         $details = $request->only(
             'username',
             'password',
-            'firstName',
-            'lastName',
             'email'
         );
 
         $this->validate($request, [
             'username' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
-            'firstName' => 'required|string',
-            'lastName' => 'required|string',
             'email' => 'required|email|distinct|unique:users',
         ]);
-
-        $this->checkHasMinimum($details);
 
         try {
             $newUserId = $this->createUser($details);
@@ -49,15 +41,6 @@ class RegistrationController extends BaseController
         } catch (\Exception $e) {
             dd($e);
             return response()->json(['error' => 'Registration Failed'], 403);
-        }
-    }
-
-    private function checkHasMinimum($details)
-    {
-        foreach ($this->requiredFields as $field) {
-            if (is_null($details[$field])) {
-                throw new \Exception('There was a problem validating the requested registration.');
-            }
         }
     }
 

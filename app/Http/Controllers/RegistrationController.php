@@ -41,23 +41,12 @@ class RegistrationController extends BaseController
             'email' => 'required|email|distinct|unique:users',
         ]);
 
-        $this->checkHasMinimum($details);
-
         try {
             $newUserId = $this->createUser($details);
             return response()->json(['_id' => $newUserId], 201);
         } catch (\Exception $e) {
             dd($e);
             return response()->json(['error' => 'Registration Failed'], 403);
-        }
-    }
-
-    private function checkHasMinimum($details)
-    {
-        foreach ($this->requiredFields as $field) {
-            if (is_null($details[$field])) {
-                throw new \Exception('There was a problem validating the requested registration.');
-            }
         }
     }
 

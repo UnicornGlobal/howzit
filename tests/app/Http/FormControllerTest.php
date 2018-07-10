@@ -28,17 +28,28 @@ class FormControllerTest extends TestCase
                     'name' => 'email',
                     'type' => 'email',
                     'label' => 'Email Address',
-
+                    'required' => true,
                     'min_length' => 7,
                     'max_length' => 56,
+                    'regex' => '/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/',
                 ],
                 [
                     'name' => 'product',
-                    'max_length' => 32,
+                    'type' => 'text',
+                    'label' => 'Product',
+                    'required' => true,
+                    'min_length' => 3,
+                    'regex' => null,
+                    'max_length' => 15,
                 ],
                 [
                     'name' => 'message',
+                    'type' => 'text',
+                    'label' => 'Your message',
+                    'required' => true,
+                    'min_length' => 10,
                     'max_length' => 512,
+                    'regex' => null,
                 ]
             ]
         ]);

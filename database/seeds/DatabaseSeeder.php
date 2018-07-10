@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call('Users');
         $this->call('MailCredentials');
         $this->call('MailProviders');
+        $this->call('Forms');
+        $this->call('Fields');
     }
 }

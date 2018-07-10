@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Credentials;
 use App\Field;
 use App\Form;
 use Illuminate\Http\Request;
@@ -23,15 +24,23 @@ class FormController extends Controller
                 'fields.*' => 'required|array',
                 'fields.*.name' => 'required|string',
                 'fields.*.max_length' => 'required|integer|min:1',
+                'fields.*.regex' => 'nullable|string',
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
+        }
+
+        $credentials = Credentials::loadFromUuid($request->get('credentials_id'));
+
+        if ($credentials->user->id !== Auth::user()->id) {
+            return response()->json(['error' => 'Invalid Credentials ID'], 422);
         }
 
         $form = new Form();
         $form->_id = Uuid::generate(4)->string;
         $form->name = $request->get('name');
         $form->response_template = $request->get('response_template');
+        $form->credentials()->associate($credentials);
         $form->created_by = Auth::user();
         $form->updated_by = Auth::user();
         $form->save();
@@ -47,6 +56,7 @@ class FormController extends Controller
             $newField->_id = Uuid::generate(4)->string;
             $newField->name = $field['name'];
             $newField->max_length = $field['max_length'];
+            $newField->regex = isset($field['regex']) ? $field['regex'] : null;
             $newField->created_by = Auth::user();
             $newField->updated_by = Auth::user();
             $newField->form()->associate($form);

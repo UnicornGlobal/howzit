@@ -92,12 +92,22 @@ class FormController extends Controller
 
     public function getFormConfig($formId)
     {
-        $form = Form::where('_id', $formId)->with('fields:')->first();
+        $form = Form::where('_id', $formId)->with('fields')->first();
 
         if (empty($form) || $form->user->id !== Auth::user()->id) {
             return response()->json(['error' => 'Invalid Form ID'], 500);
         }
 
+        $form->makeHidden(['_id', 'response_template', 'created_at', 'updated_at']);
+
+        $fields = $form->fields;
+        $fields->each(function ($field, $key) {
+            $field->makeHidden(['_id', 'created_at, updated_at', ]);
+        });
+
+        $form->fields = $fields;
+
+        return response()->json($form, 200);
 
     }
 }

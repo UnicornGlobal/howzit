@@ -150,7 +150,7 @@ $router->group(
              * "public" facing endpoints - for retrieving form configs and submitting responses
              */
             $router->group(['prefix' => 'public', 'middleware' => 'role:user'], function () use ($router) {
-                $router->get('forms/{formId}', 'FormControlller@getFormConfig');
+                $router->get('forms/{formId}', 'FormController@getFormConfig');
             });
         });
     }

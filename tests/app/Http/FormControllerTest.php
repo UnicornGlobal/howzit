@@ -120,6 +120,5 @@ class FormControllerTest extends TestCase
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(500);
         $this->assertEquals('Invalid Form ID', $result->error);
-
     }
 }

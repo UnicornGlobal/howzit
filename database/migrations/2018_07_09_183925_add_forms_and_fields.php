@@ -35,8 +35,12 @@ class AddFormsAndFields extends Migration
             $table->bigIncrements('id');
             $table->uuid('_id')->unique();
             $table->string('name');
+            $table->string('label');
+            $table->string('type')->default('text');
+            $table->unsignedInteger('min_length');
             $table->unsignedInteger('max_length');
             $table->string('regex')->nullable();
+            $table->boolean('required')->default(false);
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

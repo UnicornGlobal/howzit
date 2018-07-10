@@ -23,6 +23,10 @@ class FormController extends Controller
                 'fields' => 'required|array|min:1',
                 'fields.*' => 'required|array',
                 'fields.*.name' => 'required|string',
+                'fields.*.label' => 'required|string',
+                'fields.*.type' => 'required|string',
+                'fields.*.required' => 'required|boolean',
+                'fields.*.min_length' => 'required|integer|min:0',
                 'fields.*.max_length' => 'required|integer|min:1',
                 'fields.*.regex' => 'nullable|string',
             ]);
@@ -55,8 +59,12 @@ class FormController extends Controller
             $newField = new Field();
             $newField->_id = Uuid::generate(4)->string;
             $newField->name = $field['name'];
+            $newField->label = $field['label'];
+            $newField->type = $field['type'];
+            $newField->min_length = $field['min_length'];
             $newField->max_length = $field['max_length'];
             $newField->regex = isset($field['regex']) ? $field['regex'] : null;
+            $newField->required = $field['required'];
             $newField->created_by = Auth::user();
             $newField->updated_by = Auth::user();
             $newField->form()->associate($form);
@@ -80,5 +88,16 @@ class FormController extends Controller
         $forms = Form::where('created_by', Auth::user()->id)->with('fields')->get();
 
         return response()->json(['forms' => $forms], 200);
+    }
+
+    public function getFormConfig($formId)
+    {
+        $form = Form::where('_id', $formId)->with('fields:')->first();
+
+        if (empty($form) || $form->user->id !== Auth::user()->id) {
+            return response()->json(['error' => 'Invalid Form ID'], 500);
+        }
+
+
     }
 }

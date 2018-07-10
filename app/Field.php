@@ -18,6 +18,7 @@ class Field extends BaseModel
         'updated_by',
         'deleted_by',
         'form_id',
+        'form',
     ];
 
     public function form()

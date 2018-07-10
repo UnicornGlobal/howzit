@@ -17,7 +17,8 @@ class FormControllerTest extends TestCase
 
     public function testAddForm()
     {
-        $template = file_get_contents('/home/fergus/UnicornGlobal/howzit/resources/views/mail/confirmaccount.blade.php');
+        $mock = __DIR__ . '/../../../resources/views/mail/confirmaccount.blade.php';
+        $template = file_get_contents($mock);
         $this->actingAs($this->user)->post('api/forms', [
             'name' => 'Formed Form',
             'response_template' => $template,

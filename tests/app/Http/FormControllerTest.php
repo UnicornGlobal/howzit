@@ -65,4 +65,32 @@ class FormControllerTest extends TestCase
             $this->assertNotEmpty($field->updated_at);
         }
     }
+
+    public function testGetSingleForm()
+    {
+        $this->actingAs($this->user)->get(sprintf('api/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(200);
+
+        $this->assertEquals('A well formed Form', $result->name);
+        $this->assertNotEmpty($result->response_template);
+        $this->assertNotEmpty($result->created_at);
+        $this->assertNotEmpty($result->updated_at);
+
+        $this->assertEquals('2d6adc3f-6b0c-4b3f-a303-6b694f4776f0', $result->credentials->_id);
+        $this->assertEquals('seeded creds', $result->credentials->name);
+        $this->assertEquals('mailgun_username', $result->credentials->username);
+        $this->assertEquals('test@howzit.com', $result->credentials->mail_from_address);
+        $this->assertEquals('Howzit Seed', $result->credentials->mail_from_name);
+        $this->assertEquals('howzit', $result->credentials->domain);
+
+        foreach ($result->fields as $field) {
+            $this->assertNotEmpty($field->_id);
+            $this->assertNotEmpty($field->name);
+            $this->assertObjectHasAttribute('regex', $field);
+            $this->assertNotEmpty($field->max_length);
+            $this->assertNotEmpty($field->created_at);
+            $this->assertNotEmpty($field->updated_at);
+        }
+    }
 }

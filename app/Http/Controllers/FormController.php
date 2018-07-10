@@ -66,13 +66,13 @@ class FormController extends Controller
 
     public function getForm($formId)
     {
-        $form = Form::loadFromUuid($formId);
+        $form = Form::where('_id', $formId)->with('credentials', 'fields')->first();
 
-        if ($form->user->id !== Auth::user()->id) {
+        if (empty($form) || $form->user->id !== Auth::user()->id) {
             return response()->json(['error' => 'Invalid Form ID'], 500);
         }
 
-        return response()->json($form->with('fields'), 200);
+        return response()->json($form, 200);
     }
 
     public function getAllForms()

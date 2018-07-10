@@ -36,6 +36,7 @@ class AddFormsAndFields extends Migration
             $table->uuid('_id')->unique();
             $table->string('name');
             $table->unsignedInteger('max_length');
+            $table->string('regex')->nullable();
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

@@ -43,4 +43,9 @@ class FormControllerTest extends TestCase
 
         $this->assertObjectHasAttribute('form_id', $result);
     }
+
+    public function tesGetAllForms()
+    {
+
+    }
 }

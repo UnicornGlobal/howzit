@@ -24,10 +24,10 @@ class AddFormsAndFields extends Migration
             $table->string('name');
             $table->text('response_template');
             $table->unsignedBigInteger('credentials_id');
-            $table->timestamps();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('deleted_by');
+            $table->timestamps();
             $table->softDeletes();
         });
 
@@ -40,6 +40,7 @@ class AddFormsAndFields extends Migration
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('deleted_by');
+            $table->timestamps();
             $table->softDeletes();
         });
     }

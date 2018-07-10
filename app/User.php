@@ -69,6 +69,11 @@ class User extends BaseModel implements
         return $this->hasMany(Credentials::class);
     }
 
+    public function forms()
+    {
+        return $this->hasMany(Form::class, 'created_by');
+    }
+
     // Verification status
     public function getConfirmedAttribute()
     {

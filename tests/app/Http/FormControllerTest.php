@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class FormControllerTest extends TestCase
@@ -16,7 +17,7 @@ class FormControllerTest extends TestCase
 
     public function testAddForm()
     {
-        $template = file_get_contents('resources/views/mail/confirmaccount.blade.php');
+        $template = file_get_contents('/home/fergus/UnicornGlobal/howzit/resources/views/mail/confirmaccount.blade.php');
         $this->actingAs($this->user)->post('api/forms', [
             'name' => 'Formed Form',
             'response_template' => $template,

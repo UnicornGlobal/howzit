@@ -26,6 +26,10 @@ class FormControllerTest extends TestCase
             'fields' => [
                 [
                     'name' => 'email',
+                    'type' => 'email',
+                    'label' => 'Email Address',
+
+                    'min_length' => 7,
                     'max_length' => 56,
                 ],
                 [

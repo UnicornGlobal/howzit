@@ -145,6 +145,13 @@ $router->group(
             $router->group(['middleware' => ['role:admin']], function () use ($router) {
                 $router->get('users/{userId}', 'UserController@getUserById');
             });
+
+            /**
+             * "public" facing endpoints - for retrieving form configs and submitting responses
+             */
+            $router->group(['prefix' => 'public', 'middleware' => 'role:user'], function () use ($router) {
+                $router->get('forms/{formId}', 'FormControlller@getFormConfig');
+            });
         });
     }
 );

@@ -20,7 +20,7 @@ class FormController extends Controller
                 'name' => 'required|string',
                 'response_template' => 'required|string',
                 'credentials_id' => ['required', 'exists:credentials,_id'],
-                'fields' => 'required|array',
+                'fields' => 'required|array|min:1',
                 'fields.*' => 'required|array',
                 'fields.*.name' => 'required|string',
                 'fields.*.max_length' => 'required|integer|min:1',

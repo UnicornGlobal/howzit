@@ -19,7 +19,7 @@ class Forms extends Seeder
             'name' => 'A well formed Form',
             'response_template' => file_get_contents(__DIR__ . '/../../resources/views/mail/confirmaccount.blade.php'),
             'credentials_id' => 1,
-            'created_by' => 1,
+            'created_by' => 2,
             'updated_by' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

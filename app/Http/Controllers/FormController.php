@@ -72,12 +72,12 @@ class FormController extends Controller
             return response()->json(['error' => 'Invalid Form ID'], 500);
         }
 
-        return response()->json($form, 200);
+        return response()->json($form->with('fields'), 200);
     }
 
     public function getAllForms()
     {
-        $forms = Auth::user()->forms()->get();
+        $forms = Form::where('created_by', Auth::user()->id)->with('fields')->get();
 
         return response()->json(['forms' => $forms], 200);
     }

@@ -14,13 +14,16 @@ class Form extends BaseModel
 
     protected $hidden = [
         'id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
         'deleted_at',
         'credentials_id',
     ];
 
     public function fields()
     {
-        return $this->hasMany(Fields::class);
+        return $this->hasMany(Field::class);
     }
 
     public function credentials()

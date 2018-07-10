@@ -14,6 +14,10 @@ class Field extends BaseModel
     protected $hidden = [
         'id',
         'deleted_at',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+        'form_id',
     ];
 
     public function form()

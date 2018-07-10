@@ -44,8 +44,25 @@ class FormControllerTest extends TestCase
         $this->assertObjectHasAttribute('form_id', $result);
     }
 
-    public function tesGetAllForms()
+    public function testGetAllForms()
     {
+        $this->actingAs($this->user)->get('api/forms');
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(200);
 
+        $this->assertObjectHasAttribute('forms', $result);
+        $this->assertEquals('A well formed Form', $result->forms[0]->name);
+        $this->assertNotEmpty($result->forms[0]->response_template);
+        $this->assertNotEmpty($result->forms[0]->created_at);
+        $this->assertNotEmpty($result->forms[0]->updated_at);
+
+        foreach ($result->forms[0]->fields as $field) {
+            $this->assertNotEmpty($field->_id);
+            $this->assertNotEmpty($field->name);
+            $this->assertObjectHasAttribute('regex', $field);
+            $this->assertNotEmpty($field->max_length);
+            $this->assertNotEmpty($field->created_at);
+            $this->assertNotEmpty($field->updated_at);
+        }
     }
 }

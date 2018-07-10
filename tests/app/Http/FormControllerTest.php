@@ -44,6 +44,20 @@ class FormControllerTest extends TestCase
         $this->assertObjectHasAttribute('form_id', $result);
     }
 
+    public function testAddInvalidForm()
+    {
+        $this->actingAs($this->user)->post('api/forms', [
+            'name' => 'Formed Form',
+            'response_template' => null,
+            'credentials_id' => '2d6adc3f-6b0c-4b3f-a303-6b694f4776f0',
+        ]);
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(422);
+
+        $this->assertEquals('The response template field is required.', $result->error->response_template[0]);
+        $this->assertEquals('The fields field is required.', $result->error->fields[0]);
+    }
+
     public function testGetAllForms()
     {
         $this->actingAs($this->user)->get('api/forms');
@@ -92,5 +106,20 @@ class FormControllerTest extends TestCase
             $this->assertNotEmpty($field->created_at);
             $this->assertNotEmpty($field->updated_at);
         }
+    }
+
+    public function testGetInvalidForm()
+    {
+        $this->actingAs($this->user)->get(sprintf('api/forms/%s', 'abcd'));
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Invalid Form ID', $result->error);
+
+        $wrongUser = User::loadFromUuid('5FFA95F4-5EB4-46FB-94F1-F2B27254725B');
+        $this->actingAs($wrongUser)->get(sprintf('api/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Invalid Form ID', $result->error);
+
     }
 }

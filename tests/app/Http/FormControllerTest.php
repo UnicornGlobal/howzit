@@ -90,8 +90,12 @@ class FormControllerTest extends TestCase
             $this->assertNotEmpty($field->name);
             $this->assertObjectHasAttribute('regex', $field);
             $this->assertNotEmpty($field->max_length);
+            $this->assertNotEmpty($field->min_length);
             $this->assertNotEmpty($field->created_at);
             $this->assertNotEmpty($field->updated_at);
+            $this->assertNotEmpty($field->required);
+            $this->assertNotEmpty($field->type);
+            $this->assertNotEmpty($field->label);
         }
     }
 
@@ -118,8 +122,12 @@ class FormControllerTest extends TestCase
             $this->assertNotEmpty($field->name);
             $this->assertObjectHasAttribute('regex', $field);
             $this->assertNotEmpty($field->max_length);
+            $this->assertNotEmpty($field->min_length);
             $this->assertNotEmpty($field->created_at);
             $this->assertNotEmpty($field->updated_at);
+            $this->assertNotEmpty($field->required);
+            $this->assertNotEmpty($field->type);
+            $this->assertNotEmpty($field->label);
         }
     }
 

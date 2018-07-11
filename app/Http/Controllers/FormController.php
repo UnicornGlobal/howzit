@@ -105,6 +105,5 @@ class FormController extends Controller
         });
 
         return response()->json($form, 200);
-
     }
 }

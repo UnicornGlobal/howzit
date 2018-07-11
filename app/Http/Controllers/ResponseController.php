@@ -12,7 +12,7 @@ class ResponseController extends Controller
     public function processFormResponse(Request $request, $formId)
     {
         $form = Form::loadFromUuid($formId);
-        $fields = $form->fields->toArray();
+        $fields = $form->fields;
         $validationArray = $this->getValidationArray($fields);
         try {
             $this->validate($request, $validationArray);
@@ -20,7 +20,7 @@ class ResponseController extends Controller
             return response()->json(['error' => $e->errors()]);
         }
 
-        return true;
+        return response()->json(['success' => true], 201);
     }
 
     private function getValidationArray($fields)

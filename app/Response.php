@@ -3,6 +3,8 @@
 namespace App;
 
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Response extends BaseModel
 {
     use SoftDeletes;

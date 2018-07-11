@@ -113,6 +113,7 @@ $router->group(
             $router->group(['prefix' => 'forms', 'middleware' => ['role:user']], function () use ($router) {
                 $router->post('', 'FormController@addForm');
                 $router->get('', 'FormController@getAllForms');
+                $router->get('/{formId}/responses', 'ResponseController@getResponsesForForm');
                 $router->get('/{formId}', 'FormController@getForm');
             });
 

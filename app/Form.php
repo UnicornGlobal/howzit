@@ -36,4 +36,9 @@ class Form extends BaseModel
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
 }

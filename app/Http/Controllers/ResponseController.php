@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Form;
 use App\Response;
 use App\ResponseElement;

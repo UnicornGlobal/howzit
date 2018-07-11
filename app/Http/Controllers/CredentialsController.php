@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Credentials;
 use App\Provider;
 use Illuminate\Http\Request;

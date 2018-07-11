@@ -151,6 +151,7 @@ $router->group(
              */
             $router->group(['prefix' => 'public', 'middleware' => 'role:user'], function () use ($router) {
                 $router->get('forms/{formId}', 'FormController@getFormConfig');
+                $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
             });
         });
     }

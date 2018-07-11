@@ -43,8 +43,8 @@ class ResponseControllerTest extends TestCase
 
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(422);
-        $this->assertEquals('The Product field is requried.', $result->error->product[0]);
-        $this->assertEquals('The name must be a string', $result->error->name[0]);
+        $this->assertEquals('The product field is required.', $result->error->product[0]);
+        $this->assertEquals('The name must be a string.', $result->error->name[0]);
         $this->assertEquals('The name must be between 2 and 120 characters.', $result->error->name[1]);
     }
 

@@ -83,7 +83,7 @@ class ResponseController extends Controller
                     $rules[] = 'integer';
                     break;
                 case 'float':
-                    $rules[] = 'float';
+                    $rules[] = 'numeric';
                     break;
                 case 'email':
                     $rules[] = 'email';

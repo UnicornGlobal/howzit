@@ -17,7 +17,8 @@ class ResponseControllerTest extends TestCase
 
     public function testProcessFormResponse()
     {
-        $this->actingAs($this->user)->post(sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+        $this->actingAs($this->user)->post(
+            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 'King Hog',
                 'email' => 'kinghog@hogs.com',
@@ -32,7 +33,8 @@ class ResponseControllerTest extends TestCase
 
     public function testProcessInvalidForm()
     {
-        $this->actingAs($this->user)->post(sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+        $this->actingAs($this->user)->post(
+            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 2,
                 'email' => 'kinghog@hogs.com',
@@ -55,7 +57,7 @@ class ResponseControllerTest extends TestCase
         $this->assertNotEmpty($result->responses[0]->created_at);
         $this->assertNotEmpty($result->responses[0]->updated_at);
 
-        // Response is formatted as array of responses for the form, containing the answer, with the relevant field name attached
+        // Response formatted as array of responses for the form, containing the answer, with the relevant field name attached
         $this->assertCount(3, $result->responses[0]->response_elements);
         $this->assertEquals('tabbs', $result->responses[0]->response_elements[0]->answer);
         $this->assertEquals('product', $result->responses[0]->response_elements[0]->field->name);

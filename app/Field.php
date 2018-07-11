@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Field extends BaseModel

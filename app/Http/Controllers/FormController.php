@@ -101,7 +101,7 @@ class FormController extends Controller
         $form->makeHidden(['_id', 'response_template', 'created_at', 'updated_at']);
 
         $form->fields->each(function ($field) {
-            $field->makeHidden(['_id', 'created_at', 'updated_at', ]);
+            $field->makeHidden(['_id', 'created_at', 'updated_at']);
         });
 
         return response()->json($form, 200);

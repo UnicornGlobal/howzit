@@ -25,6 +25,7 @@ class ResponseController extends Controller
 
     private function getValidationArray($fields)
     {
+        $validationArray = [];
         foreach ($fields as $field) {
             $key = $field->name;
             $rules = [];

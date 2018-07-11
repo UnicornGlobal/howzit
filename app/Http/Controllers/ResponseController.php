@@ -31,7 +31,7 @@ class ResponseController extends Controller
         try {
             $this->validate($request, $validationArray);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->errors()]);
+            return response()->json(['error' => $e->errors()], 422);
         }
 
         // Create the response record

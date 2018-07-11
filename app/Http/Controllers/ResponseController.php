@@ -9,6 +9,13 @@ use Illuminate\Validation\ValidationException;
 
 class ResponseController extends Controller
 {
+    /**
+     * Process a response to a form
+     *
+     * @param Request $request
+     * @param $formId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function processFormResponse(Request $request, $formId)
     {
         $form = Form::loadFromUuid($formId);
@@ -23,6 +30,12 @@ class ResponseController extends Controller
         return response()->json(['success' => true], 201);
     }
 
+    /**
+     * Maps the form's fields to Illuminate's validation rules
+     *
+     * @param $fields
+     * @return array
+     */
     private function getValidationArray($fields)
     {
         $validationArray = [];

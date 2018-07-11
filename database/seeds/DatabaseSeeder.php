@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call('MailProviders');
         $this->call('Forms');
         $this->call('Fields');
+        $this->call('Responses');
     }
 }

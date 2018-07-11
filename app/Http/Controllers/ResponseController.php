@@ -34,12 +34,6 @@ class ResponseController extends Controller
                 $rules[] = 'required';
             };
             switch ($field->type) {
-                case 'text':
-                    $rules[] = 'string';
-                    break;
-                case 'string':
-                    $rules[] = 'string';
-                    break;
                 case 'integer':
                     $rules[] = 'integer';
                     break;
@@ -49,6 +43,8 @@ class ResponseController extends Controller
                 case 'email':
                     $rules[] = 'email';
                     break;
+                default:
+                    $rules[] = 'string';
             }
 
             if (!empty($field->regex)) {

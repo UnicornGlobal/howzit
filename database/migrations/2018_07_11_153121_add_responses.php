@@ -32,6 +32,7 @@ class AddResponses extends Migration
         Schema::create('response_elements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('field_id');
+            $table->unsignedBigInteger('response_id');
             $table->string('answer');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

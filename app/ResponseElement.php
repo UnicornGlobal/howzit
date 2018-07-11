@@ -24,4 +24,9 @@ class ResponseElement extends BaseModel
     {
         return $this->belongsTo(Response::class);
     }
+
+    public function field()
+    {
+        return $this->belongsTo(Field::class);
+    }
 }

@@ -101,4 +101,17 @@ class ResponseController extends Controller
         }
         return $validationArray;
     }
+
+    public function getResponsesForForm($formId)
+    {
+        $form = Form::loadFromUuid($formId);
+
+        if ($form->user->id !== Auth::user()->id) {
+            return response()->json(['error' => 'Invalid Form ID'], 500);
+        }
+
+        $responses = $form->responses()->with('responseElements', 'responseElements.field:id,name')->get();
+
+        return response()->json(['responses' => $responses], 200);
+    }
 }

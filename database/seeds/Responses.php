@@ -27,6 +27,7 @@ class Responses extends Seeder
         ResponseElement::firstOrCreate([
             'id' => 2,
             'field_id' => 1,
+            'response_id' => 1,
             'answer' => 'testuser@yahoo.com',
             'created_by' => 1,
             'updated_by' => 1,
@@ -37,6 +38,7 @@ class Responses extends Seeder
         ResponseElement::firstOrCreate([
             'id' => 3,
             'field_id' => 2,
+            'response_id' => 1,
             'answer' => 'Tom Smith',
             'created_by' => 1,
             'updated_by' => 1,
@@ -47,6 +49,7 @@ class Responses extends Seeder
         ResponseElement::firstOrCreate([
             'id' => 1,
             'field_id' => 3,
+            'response_id' => 1,
             'answer' => 'tabbs',
             'created_by' => 1,
             'updated_by' => 1,

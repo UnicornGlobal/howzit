@@ -14,6 +14,7 @@ class ResponseElement extends BaseModel
     protected $hidden = [
         'id',
         'field_id',
+        'response_id',
         'deleted_at',
         'created_by',
         'updated_by',

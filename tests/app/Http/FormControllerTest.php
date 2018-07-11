@@ -149,5 +149,18 @@ class FormControllerTest extends TestCase
     {
         $this->actingAs($this->user)->get(sprintf('api/public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
         $result = json_decode($this->response->getContent());
+        $this->assertResponseOk();
+        $this->assertEquals('A well formed Form', $result->name);
+
+        foreach ($result->fields as $field) {
+            $this->assertCount(7, (array)$field);
+            $this->assertNotEmpty($field->name);
+            $this->assertObjectHasAttribute('regex', $field);
+            $this->assertNotEmpty($field->max_length);
+            $this->assertNotEmpty($field->min_length);
+            $this->assertNotEmpty($field->required);
+            $this->assertNotEmpty($field->type);
+            $this->assertNotEmpty($field->label);
+        }
     }
 }

@@ -27,7 +27,6 @@ class AddProviders extends Migration
                 $table->softDeletes();
             });
         }
-
     }
 
     /**

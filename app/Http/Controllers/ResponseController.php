@@ -59,7 +59,14 @@ class ResponseController extends Controller
         }
         ResponseElement::insert($elements);
 
+        $this->emailResponseToOwner($response);
+
         return response()->json(['success' => true], 201);
+    }
+
+    private function emailResponseToOwner($response)
+    {
+
     }
 
     /**

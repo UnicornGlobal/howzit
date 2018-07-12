@@ -40,6 +40,7 @@ class AddFormsAndFields extends Migration
             $table->unsignedInteger('max_length');
             $table->string('regex')->nullable();
             $table->boolean('required')->default(false);
+            $table->unsignedInteger('order_index');
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

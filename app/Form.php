@@ -18,13 +18,12 @@ class Form extends BaseModel
         'updated_by',
         'deleted_by',
         'deleted_at',
-        'credentials_id',
         'user',
     ];
 
     public function fields()
     {
-        return $this->hasMany(Field::class);
+        return $this->hasMany(Field::class)->orderBy('order_index');
     }
 
     public function user()

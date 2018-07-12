@@ -28,6 +28,7 @@ class FormController extends Controller
                 'fields.*.min_length' => 'required|integer|min:0',
                 'fields.*.max_length' => 'required|integer|min:1',
                 'fields.*.regex' => 'nullable|string',
+                'fields.*.order_index' => 'required|integer|min:0',
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
@@ -35,6 +36,7 @@ class FormController extends Controller
 
         $form = new Form();
         $form->_id = Uuid::generate(4)->string;
+        $form->owner_email = $request->get('owner_email');
         $form->name = $request->get('name');
         $form->created_by = Auth::user();
         $form->updated_by = Auth::user();
@@ -56,6 +58,7 @@ class FormController extends Controller
             $newField->max_length = $field['max_length'];
             $newField->regex = isset($field['regex']) ? $field['regex'] : null;
             $newField->required = $field['required'];
+            $newField->order_index = $field['order_index'];
             $newField->created_by = Auth::user();
             $newField->updated_by = Auth::user();
             $newField->form()->associate($form);

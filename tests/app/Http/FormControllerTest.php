@@ -29,6 +29,7 @@ class FormControllerTest extends TestCase
                     'min_length' => 7,
                     'max_length' => 56,
                     'regex' => '/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/',
+                    'order_index' => 2,
                 ],
                 [
                     'name' => 'product',
@@ -38,6 +39,7 @@ class FormControllerTest extends TestCase
                     'min_length' => 3,
                     'regex' => null,
                     'max_length' => 15,
+                    'order_index' => 1,
                 ],
                 [
                     'name' => 'message',
@@ -47,6 +49,7 @@ class FormControllerTest extends TestCase
                     'min_length' => 10,
                     'max_length' => 512,
                     'regex' => null,
+                    'order_index' => 3,
                 ]
             ]
         ]);
@@ -139,7 +142,7 @@ class FormControllerTest extends TestCase
         $this->assertEquals('A well formed Form', $result->name);
 
         foreach ($result->fields as $field) {
-            $this->assertCount(7, (array)$field);
+            $this->assertCount(8, (array)$field);
             $this->assertNotEmpty($field->name);
             $this->assertObjectHasAttribute('regex', $field);
             $this->assertNotEmpty($field->max_length);
@@ -147,6 +150,7 @@ class FormControllerTest extends TestCase
             $this->assertNotEmpty($field->required);
             $this->assertNotEmpty($field->type);
             $this->assertNotEmpty($field->label);
+            $this->assertNotEmpty($field->order_index);
         }
     }
 }

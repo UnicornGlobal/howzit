@@ -34,7 +34,6 @@ class AddMailCredentials extends Migration
                 $table->softDeletes();
             });
         }
-
     }
 
     /**

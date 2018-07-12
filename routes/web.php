@@ -96,14 +96,6 @@ $router->group(
                 return $router->app->version();
             });
 
-            $router->group(['prefix' => 'users/credentials', 'middleware' => ['role:user']], function () use ($router) {
-                $router->post('', 'CredentialsController@addCredentials');
-                $router->put('/{credentialId}', 'CredentialsController@editCredentials');
-                $router->get('', 'CredentialsController@getAllCredentials');
-                $router->get('/{credentialId}', 'CredentialsController@getCredentials');
-                $router->delete('', 'CredentialsController@deleteCredentials');
-            });
-
             /**
              * Roles
              */

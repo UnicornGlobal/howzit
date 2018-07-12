@@ -18,8 +18,7 @@ class FormController extends Controller
         try {
             $this->validate($request, [
                 'name' => 'required|string',
-                'response_template' => 'required|string',
-                'credentials_id' => ['required', 'exists:credentials,_id'],
+                'owner_email' => 'required|email',
                 'fields' => 'required|array|min:1',
                 'fields.*' => 'required|array',
                 'fields.*.name' => 'required|string',
@@ -34,17 +33,9 @@ class FormController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         }
 
-        $credentials = Credentials::loadFromUuid($request->get('credentials_id'));
-
-        if ($credentials->user->id !== Auth::user()->id) {
-            return response()->json(['error' => 'Invalid Credentials ID'], 422);
-        }
-
         $form = new Form();
         $form->_id = Uuid::generate(4)->string;
         $form->name = $request->get('name');
-        $form->response_template = $request->get('response_template');
-        $form->credentials()->associate($credentials);
         $form->created_by = Auth::user();
         $form->updated_by = Auth::user();
         $form->save();
@@ -74,7 +65,7 @@ class FormController extends Controller
 
     public function getForm($formId)
     {
-        $form = Form::where('_id', $formId)->with('credentials', 'fields')->first();
+        $form = Form::where('_id', $formId)->with('fields')->first();
 
         if (empty($form) || $form->user->id !== Auth::user()->id) {
             return response()->json(['error' => 'Invalid Form ID'], 500);

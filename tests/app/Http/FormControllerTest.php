@@ -17,12 +17,9 @@ class FormControllerTest extends TestCase
 
     public function testAddForm()
     {
-        $mock = __DIR__ . '/../../../resources/views/mail/confirmaccount.blade.php';
-        $template = file_get_contents($mock);
         $this->actingAs($this->user)->post('api/forms', [
             'name' => 'Formed Form',
-            'response_template' => $template,
-            'credentials_id' => '2d6adc3f-6b0c-4b3f-a303-6b694f4776f0',
+            'owner_email' => 'test@howzit.com',
             'fields' => [
                 [
                     'name' => 'email',
@@ -63,13 +60,11 @@ class FormControllerTest extends TestCase
     {
         $this->actingAs($this->user)->post('api/forms', [
             'name' => 'Formed Form',
-            'response_template' => null,
-            'credentials_id' => '2d6adc3f-6b0c-4b3f-a303-6b694f4776f0',
         ]);
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(422);
 
-        $this->assertEquals('The response template field is required.', $result->error->response_template[0]);
+        $this->assertEquals('The owner email field is required.', $result->error->owner_email[0]);
         $this->assertEquals('The fields field is required.', $result->error->fields[0]);
     }
 
@@ -81,7 +76,6 @@ class FormControllerTest extends TestCase
 
         $this->assertObjectHasAttribute('forms', $result);
         $this->assertEquals('A well formed Form', $result->forms[0]->name);
-        $this->assertNotEmpty($result->forms[0]->response_template);
         $this->assertNotEmpty($result->forms[0]->created_at);
         $this->assertNotEmpty($result->forms[0]->updated_at);
 
@@ -106,16 +100,8 @@ class FormControllerTest extends TestCase
         $this->assertResponseStatus(200);
 
         $this->assertEquals('A well formed Form', $result->name);
-        $this->assertNotEmpty($result->response_template);
         $this->assertNotEmpty($result->created_at);
         $this->assertNotEmpty($result->updated_at);
-
-        $this->assertEquals('2d6adc3f-6b0c-4b3f-a303-6b694f4776f0', $result->credentials->_id);
-        $this->assertEquals('seeded creds', $result->credentials->name);
-        $this->assertEquals('mailgun_username', $result->credentials->username);
-        $this->assertEquals('test@howzit.com', $result->credentials->mail_from_address);
-        $this->assertEquals('Howzit Seed', $result->credentials->mail_from_name);
-        $this->assertEquals('howzit', $result->credentials->domain);
 
         foreach ($result->fields as $field) {
             $this->assertNotEmpty($field->_id);

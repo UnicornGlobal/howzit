@@ -22,8 +22,7 @@ class AddFormsAndFields extends Migration
             $table->bigIncrements('id');
             $table->uuid('_id')->unique();
             $table->string('name');
-            $table->text('response_template');
-            $table->unsignedBigInteger('credentials_id');
+            $table->string('owner_email');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('deleted_by');

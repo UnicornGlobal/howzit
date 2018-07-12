@@ -4,7 +4,7 @@ A simple API to handle submission of contact information forms
 and add custom email response templates.
 
 ## Usage
-- Register an account with your preferred mail provider credentials (Currently only supporting Mailgun)
+- Register an account
 - Submit a new form, specifying expected fields and response template
 - Point form responses to this endpoint, we'll say Howzit for you
 

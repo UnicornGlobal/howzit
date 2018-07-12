@@ -27,11 +27,6 @@ class Form extends BaseModel
         return $this->hasMany(Field::class);
     }
 
-    public function credentials()
-    {
-        return $this->belongsTo(Credentials::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');

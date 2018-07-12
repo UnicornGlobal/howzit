@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Form;
+use App\Mail\ResponseMessage;
 use App\Response;
 use App\ResponseElement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Webpatser\Uuid\Uuid;
 
@@ -66,7 +68,25 @@ class ResponseController extends Controller
 
     private function emailResponseToOwner($response)
     {
+        $fields = '';
 
+        foreach ($response->responseElements as $element) {
+            $key = $element->field->label;
+            $value = $element->answer;
+            $fields = sprintf("%s%s: %s\n", $fields, $key, $value);
+        };
+
+        $cleanedSender = preg_replace(
+            "/(\t|\n|\v|\f|\r| |\xC2\x85|\xc2\xa0|\xe1\xa0\x8e|\xe2\x80[\x80-\x8D]|\xe2\x80\xa8|\xe2\x80\xa9|"
+                    ."\xe2\x80\xaF|\xe2\x81\x9f|\xe2\x81\xa0|\xe3\x80\x80|\xef\xbb\xbf)+/",
+            "_",
+            $response->form->name
+        );
+
+        Mail::raw($fields, function ($message) use ($response, $cleanedSender) {
+            $message->from(sprintf('%s@howzit.com', $cleanedSender));
+            $message->to($response->form->owner_email);
+        });
     }
 
     /**

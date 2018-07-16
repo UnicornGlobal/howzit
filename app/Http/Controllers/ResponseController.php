@@ -54,7 +54,7 @@ class ResponseController extends Controller
 
         $token->response()->associate($response);
         // Invalidate the token
-        $token->deleted_by = Auth::user();
+        $token->deleted_by = Auth::user()->id;
         $token->save();
         $token->delete();
 

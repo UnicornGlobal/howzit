@@ -5,8 +5,8 @@ and add custom email response templates.
 
 ## Usage
 - Register an account
-- Submit a new form, specifying expected fields and response template
-- Point form responses to this endpoint, we'll say Howzit for you
+- Submit a new form, specifying expected fields
+- Point form responses to this endpoint, we'll forward the response to the specified `owner_email`
 
 ## Setup
 

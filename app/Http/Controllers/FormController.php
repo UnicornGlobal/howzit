@@ -38,8 +38,8 @@ class FormController extends Controller
         $form->_id = Uuid::generate(4)->string;
         $form->owner_email = $request->get('owner_email');
         $form->name = $request->get('name');
-        $form->created_by = Auth::user();
-        $form->updated_by = Auth::user();
+        $form->created_by = Auth::user()->id;
+        $form->updated_by = Auth::user()->id;
         $form->save();
         $this->createFieldsForForm($form, $request->get('fields'));
 
@@ -59,8 +59,8 @@ class FormController extends Controller
             $newField->regex = isset($field['regex']) ? $field['regex'] : null;
             $newField->required = $field['required'];
             $newField->order_index = $field['order_index'];
-            $newField->created_by = Auth::user();
-            $newField->updated_by = Auth::user();
+            $newField->created_by = Auth::user()->id;
+            $newField->updated_by = Auth::user()->id;
             $newField->form()->associate($form);
             $newField->save();
         }

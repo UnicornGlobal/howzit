@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Credentials;
 use App\Field;
 use App\Form;
+use App\Token;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -98,6 +99,19 @@ class FormController extends Controller
             $field->makeHidden(['_id', 'created_at', 'updated_at']);
         });
 
-        return response()->json($form, 200);
+        $token = new Token();
+        $token->_id = Uuid::generate(4)->string;
+        $token->form_id = $form->id;
+        $token->created_by = Auth::user()->id;
+        $token->updated_by = Auth::user()->id;
+
+        $token->save();
+
+        $config = [
+            'form' => $form->toArray(),
+            'token' => $token->_id,
+        ];
+
+        return response()->json($config, 200);
     }
 }

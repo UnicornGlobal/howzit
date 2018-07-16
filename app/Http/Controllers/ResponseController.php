@@ -113,7 +113,7 @@ class ResponseController extends Controller
     private function getValidationArray($fields)
     {
         $validationArray = [];
-        $validationArray['token'] = ['required', 'string', 'exists:tokens,_id'];
+        $validationArray['token'] = ['required', 'string'];
         foreach ($fields as $field) {
             $key = $field->name;
             $rules = [];

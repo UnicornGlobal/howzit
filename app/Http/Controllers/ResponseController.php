@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Form;
-use App\Mail\ResponseMessage;
 use App\Response;
 use App\ResponseElement;
+use App\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Webpatser\Uuid\Uuid;
@@ -35,6 +36,14 @@ class ResponseController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         }
 
+        $token = Token::where('_id', $request->get('token'))->with('form')->first();
+
+        if (empty($token) || $form->id !== $token->form->id) {
+            Log::warning(sprintf('Invalid token for response: User: %s', Auth::user()->id));
+            // Generic error response
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         // Create the response record
         $response = new Response();
         $response->form()->associate($form);
@@ -42,6 +51,12 @@ class ResponseController extends Controller
         $response->created_by = Auth::user()->id;
         $response->updated_by = Auth::user()->id;
         $response->save();
+
+        $token->response()->associate($response);
+        // Invalidate the token
+        $token->deleted_by = Auth::user();
+        $token->save();
+        $token->delete();
 
         // Add each of the response elements
         $elements = [];
@@ -98,6 +113,7 @@ class ResponseController extends Controller
     private function getValidationArray($fields)
     {
         $validationArray = [];
+        $validationArray['token'] = ['required', 'string', 'exists:tokens,_id'];
         foreach ($fields as $field) {
             $key = $field->name;
             $rules = [];

@@ -17,18 +17,54 @@ class ResponseControllerTest extends TestCase
 
     public function testProcessFormResponse()
     {
+        $this->actingAs($this->user)->get(sprintf('api/public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
         $this->actingAs($this->user)->post(
             sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 'King Hog',
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
+                'token' => $token,
             ]
         );
 
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(201);
         $this->assertTrue($result->success);
+    }
+
+    public function testInvalidToken()
+    {
+        $this->actingAs($this->user)->get(sprintf('api/public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
+
+        // Use up the token
+        $this->actingAs($this->user)->post(
+            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ]
+        );
+        $this->assertResponseStatus(201);
+        // try again
+        $this->actingAs($this->user)->post(
+            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
     }
 
     public function testProcessInvalidForm()

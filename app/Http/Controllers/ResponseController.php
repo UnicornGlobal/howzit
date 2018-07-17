@@ -54,8 +54,8 @@ class ResponseController extends Controller
         $response = new Response();
         $response->form()->associate($form);
         $response->_id = Uuid::generate(4)->string;
-        $response->created_by = Auth::user()->id;
-        $response->updated_by = Auth::user()->id;
+        $response->created_by = 1;
+        $response->updated_by = 1;
         $response->save();
 
         $token->response()->associate($response);
@@ -72,8 +72,8 @@ class ResponseController extends Controller
                 'response_id' => $response->id,
                 'field_id' => $field->id,
                 'answer' => $request->get($field->name),
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -152,10 +152,6 @@ class ResponseController extends Controller
     public function getResponsesForForm($formId)
     {
         $form = Form::loadFromUuid($formId);
-
-        if ($form->user->id !== Auth::user()->id) {
-            return response()->json(['error' => 'Invalid Form ID'], 500);
-        }
 
         $responses = $form->responses()->with('responseElements', 'responseElements.field:id,name')->get();
 

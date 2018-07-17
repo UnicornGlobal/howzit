@@ -139,7 +139,7 @@ $router->group(
             /**
              * "public" facing endpoints - for retrieving form configs and submitting responses
              */
-            $router->group(['prefix' => 'public', 'middleware' => ['role:user', 'throttle:100,1']], function () use ($router) {
+            $router->group(['prefix' => 'public', 'middleware' => ['role:user', 'throttle:100,1440']], function () use ($router) {
                 $router->get('forms/{formId}', 'FormController@getFormConfig');
                 $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
             });

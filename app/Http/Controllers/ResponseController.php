@@ -38,7 +38,7 @@ class ResponseController extends Controller
 
         $token = Token::where('_id', $request->get('token'))->with('form')->first();
 
-        if (empty($token) || $form->id !== $token->form->id) {
+        if ($token->used || $form->id !== $token->form->id) {
             Log::warning(sprintf('Invalid token for response: User: %s', Auth::user()->id));
             // Generic error response
             return response()->json(['error' => 'Server error'], 500);
@@ -54,9 +54,8 @@ class ResponseController extends Controller
 
         $token->response()->associate($response);
         // Invalidate the token
-        $token->deleted_by = Auth::user()->id;
+        $token->used = true;
         $token->save();
-        $token->delete();
 
         // Add each of the response elements
         $elements = [];

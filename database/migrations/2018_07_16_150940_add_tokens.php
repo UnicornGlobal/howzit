@@ -20,6 +20,7 @@ class AddTokens extends Migration
         Schema::create('tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('_id')->unique();
+            $table->boolean('used')->default(false);
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('response_id')->nullable();
             $table->unsignedBigInteger('created_by');

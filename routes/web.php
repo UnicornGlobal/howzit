@@ -70,6 +70,14 @@ $router->group(
         });
 
         /**
+         * "public" facing endpoints - for retrieving form configs and submitting responses
+         *  Only allowed 10 requests per user per day
+         */
+        $router->group(['prefix' => 'public', 'middleware' => 'throttle:10,1440'], function () use ($router) {
+            $router->get('forms/{formId}', 'FormController@getFormConfig');
+            $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
+        });
+        /**
          * Only allow x of these requests per minute.
          *
          * Production should be a low number
@@ -134,14 +142,6 @@ $router->group(
 
             $router->group(['middleware' => ['role:admin']], function () use ($router) {
                 $router->get('users/{userId}', 'UserController@getUserById');
-            });
-
-            /**
-             * "public" facing endpoints - for retrieving form configs and submitting responses
-             */
-            $router->group(['prefix' => 'public', 'middleware' => ['role:user', 'throttle:100,1440']], function () use ($router) {
-                $router->get('forms/{formId}', 'FormController@getFormConfig');
-                $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
             });
         });
     }

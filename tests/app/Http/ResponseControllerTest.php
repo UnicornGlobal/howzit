@@ -17,12 +17,16 @@ class ResponseControllerTest extends TestCase
 
     public function testProcessFormResponse()
     {
-        $this->actingAs($this->user)->post(
-            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 'King Hog',
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
+                'token' => $token,
             ]
         );
 
@@ -31,10 +35,42 @@ class ResponseControllerTest extends TestCase
         $this->assertTrue($result->success);
     }
 
+    public function testInvalidToken()
+    {
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
+
+        // Use up the token
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ]
+        );
+        $this->assertResponseStatus(201);
+        // try again
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+    }
+
     public function testProcessInvalidForm()
     {
-        $this->actingAs($this->user)->post(
-            sprintf('api/public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 2,
                 'email' => 'kinghog@hogs.com',

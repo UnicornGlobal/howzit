@@ -13,5 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('Roles');
         $this->call('Users');
+        $this->call('Forms');
+        $this->call('Fields');
+        $this->call('Responses');
     }
 }

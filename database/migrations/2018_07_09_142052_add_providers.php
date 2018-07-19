@@ -15,18 +15,17 @@ class AddProviders extends Migration
     {
         if (env('APP_ENV') !== 'production') {
             Schema::dropIfExists('providers');
-
-            Schema::create('providers', function (Blueprint $table) {
-                $table->bigIncrements('id');
-                $table->uuid('_id')->unique();
-                $table->string('name');
-                $table->timestamps();
-                $table->unsignedBigInteger('created_by');
-                $table->unsignedBigInteger('updated_by');
-                $table->unsignedBigInteger('deleted_by');
-                $table->softDeletes();
-            });
         }
+        Schema::create('providers', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->uuid('_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('deleted_by');
+            $table->softDeletes();
+        });
     }
 
     /**

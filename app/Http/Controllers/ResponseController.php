@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Form;
-use App\Mail\ResponseMessage;
 use App\Response;
 use App\ResponseElement;
+use App\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Webpatser\Uuid\Uuid;
@@ -35,13 +36,32 @@ class ResponseController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         }
 
+        $token = Token::where('_id', $request->get('token'))->with('form')->first();
+
+        if ($token->used) {
+            Log::warning(sprintf('Reused token for response: User: %s', Auth::user()->id));
+            // Generic error response
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
+        if ($form->id !== $token->form->id) {
+            Log::warning(sprintf('User attempting to cross-user token for response: User: %s', Auth::user()->id));
+            // Generic error response
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         // Create the response record
         $response = new Response();
         $response->form()->associate($form);
         $response->_id = Uuid::generate(4)->string;
-        $response->created_by = Auth::user()->id;
-        $response->updated_by = Auth::user()->id;
+        $response->created_by = 1;
+        $response->updated_by = 1;
         $response->save();
+
+        $token->response()->associate($response);
+        // Invalidate the token
+        $token->used = true;
+        $token->save();
 
         // Add each of the response elements
         $elements = [];
@@ -52,8 +72,8 @@ class ResponseController extends Controller
                 'response_id' => $response->id,
                 'field_id' => $field->id,
                 'answer' => $request->get($field->name),
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -98,6 +118,7 @@ class ResponseController extends Controller
     private function getValidationArray($fields)
     {
         $validationArray = [];
+        $validationArray['token'] = ['required', 'string'];
         foreach ($fields as $field) {
             $key = $field->name;
             $rules = [];
@@ -131,10 +152,6 @@ class ResponseController extends Controller
     public function getResponsesForForm($formId)
     {
         $form = Form::loadFromUuid($formId);
-
-        if ($form->user->id !== Auth::user()->id) {
-            return response()->json(['error' => 'Invalid Form ID'], 500);
-        }
 
         $responses = $form->responses()->with('responseElements', 'responseElements.field:id,name')->get();
 

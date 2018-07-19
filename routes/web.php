@@ -97,6 +97,16 @@ $router->group(
             });
 
             /**
+             * Forms
+             */
+            $router->group(['prefix' => 'forms', 'middleware' => ['role:user']], function () use ($router) {
+                $router->post('', 'FormController@addForm');
+                $router->get('', 'FormController@getAllForms');
+                $router->get('/{formId}/responses', 'ResponseController@getResponsesForForm');
+                $router->get('/{formId}', 'FormController@getForm');
+            });
+
+            /**
              * Roles
              */
             $router->group(['prefix' => 'roles', 'middleware' => ['role:admin']], function () use ($router) {
@@ -124,6 +134,14 @@ $router->group(
 
             $router->group(['middleware' => ['role:admin']], function () use ($router) {
                 $router->get('users/{userId}', 'UserController@getUserById');
+            });
+
+            /**
+             * "public" facing endpoints - for retrieving form configs and submitting responses
+             */
+            $router->group(['prefix' => 'public', 'middleware' => 'role:user'], function () use ($router) {
+                $router->get('forms/{formId}', 'FormController@getFormConfig');
+                $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
             });
         });
     }

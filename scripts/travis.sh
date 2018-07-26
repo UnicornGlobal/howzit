@@ -38,7 +38,7 @@ function deploy_dev() {
     echo "Deploying Dev Branch to Staging"
     echo "EDIT YOUR TRAVIS FILE TO ENABLE THIS"
 
-    # package
+     package
      submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
 }
 

@@ -21,15 +21,17 @@ function submit() {
     echo "Submitting"
     echo "EDIT YOUR TRAVIS SCRIPTS TO ENABLE THIS"
 
-    # S_HOST=$3
+     S_PORT=$1
+     S_USER=$2
+     S_HOST=$3
 
-    # Copy our deploy script to the remote machine
-    # scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} ./scripts/deploy.sh ${S_USER}@${S_HOST}:/tmp/deploy.sh
-    # scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/package.tgz ${S_USER}@${S_HOST}:/tmp/package.tgz
+     Copy our deploy script to the remote machine
+     scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} ./scripts/deploy.sh ${S_USER}@${S_HOST}:/tmp/deploy.sh
+     scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/package.tgz ${S_USER}@${S_HOST}:/tmp/package.tgz
 
-    # run
-    # ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} chmod +x /tmp/deploy.sh
-    # ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} /tmp/deploy.sh dev
+     run
+     ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} chmod +x /tmp/deploy.sh
+     ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} /tmp/deploy.sh dev
 }
 
 function deploy_dev() {
@@ -37,7 +39,7 @@ function deploy_dev() {
     echo "EDIT YOUR TRAVIS FILE TO ENABLE THIS"
 
     # package
-    # submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
+     submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
 }
 
 function deploy_prod() {

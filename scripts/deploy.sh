@@ -4,7 +4,7 @@
 SUBMITTED_BRANCH=$1
 TRUE_BRANCH=dev
 PACKAGE_NAME=/tmp/howzit-package.tgz
-PACKAGE_FOLDER=/tmp/howzit-package
+PACKAGE_FOLDER=/tmp/tmp/build/
 
 if [ "$1" != "$TRUE_BRANCH" ]; then
     echo "Bad submission, aborting"

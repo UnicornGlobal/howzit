@@ -25,11 +25,11 @@ function submit() {
      S_USER=$2
      S_HOST=$3
 
-     Copy our deploy script to the remote machine
+     #Copy our deploy script to the remote machine
      scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} ./scripts/deploy.sh ${S_USER}@${S_HOST}:/tmp/deploy.sh
      scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/package.tgz ${S_USER}@${S_HOST}:/tmp/package.tgz
 
-     run
+     #run
      ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} chmod +x /tmp/deploy.sh
      ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} /tmp/deploy.sh dev
 }

@@ -13,7 +13,7 @@ function package() {
     rm -rf .git
     cd -
     cd /tmp
-    tar -czvf /tmp/howzit-package.tgz /tmp/build
+    tar -czf /tmp/howzit-package.tgz /tmp/build
     cd -
 }
 

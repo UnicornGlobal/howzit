@@ -50,7 +50,9 @@ function deploy_prod() {
     # submit ${LIVE_DEPLOY_PORT} ${LIVE_DEPLOY_USER} ${LIVE_DEPLOY_HOST}
 }
 
-if [ "$TRAVIS_BRANCH" == "dev" ]; then
+if [ "$TRAVIS_BRANCH" == "deploy-dev" ]; then
+  deploy_dev
+elif [ "$TRAVIS_BRANCH" == "dev" ]; then
   deploy_dev
 elif [ "$TRAVIS_BRANCH" == "master" ]; then
   deploy_prod

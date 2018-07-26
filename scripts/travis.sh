@@ -13,7 +13,7 @@ function package() {
     rm -rf .git
     cd -
     cd /tmp
-    tar -czvf /tmp/package.tgz /tmp/build
+    tar -czvf /tmp/howzit-package.tgz /tmp/build
     cd -
 }
 
@@ -27,7 +27,7 @@ function submit() {
 
      #Copy our deploy script to the remote machine
      scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} ./scripts/deploy.sh ${S_USER}@${S_HOST}:/tmp/deploy.sh
-     scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/package.tgz ${S_USER}@${S_HOST}:/tmp/package.tgz
+     scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/howzit-package.tgz ${S_USER}@${S_HOST}:/tmp/howzit-package.tgz
 
      #run
      ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} chmod +x /tmp/deploy.sh

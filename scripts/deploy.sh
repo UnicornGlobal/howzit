@@ -23,26 +23,18 @@ cd /srv/howzit
 
 # owners and permissions
 sudo chown -R ducky:www-data /srv/howzit/
+# Write permission for storage
+sudo chmod g+w /srv/howzit/storage/ -R
 
 cd /srv/howzit
 
 # sensitive files
 rm -rf scripts
-rm -rf node_modules
-rm -rf config
 rm -rf test
-rm -rf src
-rm -rf build
 rm -rf .git
 rm -f .gitignore
 rm -f .gitattributes
 rm -f .babelrc
 rm -f .editorconfig
 rm -f .travis.yml
-rm -f .eslintignore
-rm -f .eslintrc.js
-rm -f .postcssrc.js
 rm -f README.md
-rm -f package.json
-rm -f npm-debug.log
-rm -f index.html

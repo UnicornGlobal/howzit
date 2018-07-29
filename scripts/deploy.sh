@@ -27,6 +27,7 @@ sudo chown -R ducky:www-data /srv/howzit/
 sudo chmod g+w /srv/howzit/storage/ -R
 
 cd /srv/howzit
+cp /home/ducky/deploy-scripts/.env /srv/howzit/
 
 # sensitive files
 rm -rf scripts

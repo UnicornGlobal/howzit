@@ -22,17 +22,13 @@ class Users extends Seeder
             DB::table('users')->delete();
         }
 
-        if (app()->environment('staging')) {
-            DB::table('users')->delete();
-        }
-
         /**
          * The system user.
          *
          * Any actions performed by the system should use this ID for the
          * users under `created_by`, `updated_by` etc
          */
-        User::create([
+        User::firstOrCreate([
             'id' => 1,
             '_id' => env('SYSTEM_USER_ID'),
             'api_key' => null,
@@ -52,8 +48,8 @@ class Users extends Seeder
          * Also used for unit tests
          */
         if (app()->environment('local')) {
-            User::create([
-                'id' => 2,
+            User::firstOrCreate([
+                'id' => 2], [
                 '_id' => '4BFE1010-C11D-4739-8C24-99E1468F08F6',
                 'api_key' => '653FDC8C-0FB7-4C72-98F2-2A3A565C7467',
                 'username' => 'user',
@@ -65,8 +61,8 @@ class Users extends Seeder
                 'updated_by' => 1,
             ]);
 
-            User::create([
-                'id' => 3,
+            User::firstOrCreate([
+                'id' => 3], [
                 '_id' => '5FFA95F4-5EB4-46FB-94F1-F2B27254725B',
                 'api_key' => 'C87A9108-1568-4CBB-88E1-B90B5A451C67',
                 'username' => 'admin',

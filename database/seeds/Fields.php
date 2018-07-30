@@ -14,7 +14,7 @@ class Fields extends Seeder
     public function run()
     {
         Field::firstOrCreate([
-            'id' => 1,
+            'id' => 1], [
             '_id' => 'cb3e3547-fa23-48b7-84ff-5f66b312f21b',
             'name' => 'email',
             'type' => 'email',
@@ -32,7 +32,7 @@ class Fields extends Seeder
         ]);
 
         Field::firstOrCreate([
-            'id' => 2,
+            'id' => 2], [
             '_id' => '46939e46-2fd0-4053-b122-95a85b76cd0c',
             'name' => 'name',
             'regex' => null,
@@ -50,7 +50,7 @@ class Fields extends Seeder
         ]);
 
         Field::firstOrCreate([
-            'id' => 3,
+            'id' => 3], [
             '_id' => 'f59d7f81-8a56-462c-976b-bb0c03c06107',
             'name' => 'product',
             'type' => 'text',

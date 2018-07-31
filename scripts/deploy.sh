@@ -28,7 +28,7 @@ sudo chmod g+w /srv/howzit/storage/ -R
 
 cd /srv/howzit
 cp /home/ducky/deploy-scripts/.env /srv/howzit/
-php artisan migrate --seed
+php artisan migrate --seed --force
 
 # sensitive files
 rm -rf scripts

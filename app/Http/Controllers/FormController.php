@@ -87,9 +87,9 @@ class FormController extends Controller
 
     public function getFormConfig($formId)
     {
-        $form = Form::where('_id', $formId)->with('fields')->first();
+        $form = Form::loadFromUuid($formId);
 
-        if (empty($form) || $form->user->id !== Auth::user()->id) {
+        if (empty($form)) {
             return response()->json(['error' => 'Invalid Form ID'], 500);
         }
 
@@ -102,8 +102,6 @@ class FormController extends Controller
         $token = new Token();
         $token->_id = Uuid::generate(4)->string;
         $token->form_id = $form->id;
-        $token->created_by = Auth::user()->id;
-        $token->updated_by = Auth::user()->id;
 
         $token->save();
 

@@ -89,10 +89,6 @@ class FormController extends Controller
     {
         $form = Form::loadFromUuid($formId);
 
-        if (empty($form)) {
-            return response()->json(['error' => 'Invalid Form ID'], 500);
-        }
-
         $form->makeHidden(['_id', 'response_template', 'created_at', 'updated_at']);
 
         $form->fields->each(function ($field) {

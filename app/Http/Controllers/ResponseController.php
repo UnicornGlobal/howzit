@@ -38,6 +38,11 @@ class ResponseController extends Controller
 
         $token = Token::where('_id', $request->get('token'))->with('form')->first();
 
+        if (empty($token)) {
+            Log::warning('Invalid token for response');
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         if ($token->used) {
             Log::warning('Reused token for response');
             // Generic error response

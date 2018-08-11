@@ -41,6 +41,19 @@ class ResponseControllerTest extends TestCase
         $result = json_decode($this->response->getContent());
         $token = $result->token;
 
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => '123',
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+
         // Use up the token
         $this->post(
             sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),

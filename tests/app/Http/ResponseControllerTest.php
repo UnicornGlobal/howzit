@@ -132,4 +132,64 @@ class ResponseControllerTest extends TestCase
         $this->assertResponseStatus(500);
         $this->assertEquals('Invalid Form ID', $result->error);
     }
+
+    public function testCrossUsedToken()
+    {
+        $this->actingAs($this->user)->post('api/forms', [
+            'name' => 'Formed Form',
+            'owner_email' => 'test@howzit.com',
+            'fields' => [
+                [
+                    'name' => 'email',
+                    'type' => 'email',
+                    'label' => 'Email Address',
+                    'required' => true,
+                    'min_length' => 7,
+                    'max_length' => 56,
+                    'regex' => '/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/',
+                    'order_index' => 2,
+                ],
+                [
+                    'name' => 'product',
+                    'type' => 'text',
+                    'label' => 'Product',
+                    'required' => true,
+                    'min_length' => 3,
+                    'regex' => null,
+                    'max_length' => 15,
+                    'order_index' => 1,
+                ],
+                [
+                    'name' => 'message',
+                    'type' => 'text',
+                    'label' => 'Your message',
+                    'required' => true,
+                    'min_length' => 10,
+                    'max_length' => 512,
+                    'regex' => null,
+                    'order_index' => 3,
+                ]
+            ]
+        ]);
+        $result = json_decode($this->response->getContent());
+        $formId= $result->form_id;
+
+        // Get config from seeded form
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
+
+        $this->post(
+            sprintf('public/forms/%s/response', $formId),
+            [
+                'message' => 'I\'m a thnake',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+    }
 }

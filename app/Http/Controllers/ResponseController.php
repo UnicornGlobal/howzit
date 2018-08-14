@@ -38,14 +38,19 @@ class ResponseController extends Controller
 
         $token = Token::where('_id', $request->get('token'))->with('form')->first();
 
+        if (empty($token)) {
+            Log::warning('Invalid token for response');
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         if ($token->used) {
-            Log::warning(sprintf('Reused token for response: User: %s', Auth::user()->id));
+            Log::warning('Reused token for response');
             // Generic error response
             return response()->json(['error' => 'Server error'], 500);
         }
 
         if ($form->id !== $token->form->id) {
-            Log::warning(sprintf('User attempting to cross-user token for response: User: %s', Auth::user()->id));
+            Log::warning('User attempting to cross-user token for response');
             // Generic error response
             return response()->json(['error' => 'Server error'], 500);
         }

@@ -29,7 +29,7 @@ class Users extends Seeder
          * users under `created_by`, `updated_by` etc
          */
         User::firstOrCreate([
-            'id' => 1,
+            'id' => 1], [
             '_id' => env('SYSTEM_USER_ID'),
             'api_key' => null,
             // Nobody must ever be able to log into this account

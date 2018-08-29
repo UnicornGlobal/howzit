@@ -73,7 +73,7 @@ $router->group(
          * "public" facing endpoints - for retrieving form configs and submitting responses
          *  Only allowed 10 requests per user per day
          */
-        $router->group(['prefix' => 'public', 'middleware' => 'throttle:10,1'], function () use ($router) {
+        $router->group(['prefix' => 'public', 'middleware' => ['throttle:10,1', 'appid']], function () use ($router) {
             $router->get('forms/{formId}', 'FormController@getFormConfig');
             $router->post('forms/{formId}/response', 'ResponseController@processFormResponse');
         });

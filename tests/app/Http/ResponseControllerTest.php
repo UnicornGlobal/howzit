@@ -17,7 +17,10 @@ class ResponseControllerTest extends TestCase
 
     public function testProcessFormResponse()
     {
-        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'), [
+            'App' => env('APP_ID')
+        ]);
+
         $result = json_decode($this->response->getContent());
         $token = $result->token;
         $this->post(
@@ -27,6 +30,9 @@ class ResponseControllerTest extends TestCase
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
                 'token' => $token,
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
 
@@ -37,7 +43,10 @@ class ResponseControllerTest extends TestCase
 
     public function testInvalidToken()
     {
-        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'), [
+            'App' => env('APP_ID')
+        ]);
+
         $result = json_decode($this->response->getContent());
         $token = $result->token;
 
@@ -48,6 +57,9 @@ class ResponseControllerTest extends TestCase
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
                 'token' => '123',
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
         $result = json_decode($this->response->getContent());
@@ -62,6 +74,9 @@ class ResponseControllerTest extends TestCase
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
                 'token' => $token,
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
         $this->assertResponseStatus(201);
@@ -73,6 +88,9 @@ class ResponseControllerTest extends TestCase
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
                 'token' => $token,
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
         $result = json_decode($this->response->getContent());
@@ -87,6 +105,9 @@ class ResponseControllerTest extends TestCase
             [
                 'name' => 2,
                 'email' => 'kinghog@hogs.com',
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
 
@@ -175,7 +196,9 @@ class ResponseControllerTest extends TestCase
         $formId= $result->form_id;
 
         // Get config from seeded form
-        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'));
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'), [
+            'App' => env('APP_ID')
+        ]);
         $result = json_decode($this->response->getContent());
         $token = $result->token;
 
@@ -186,6 +209,9 @@ class ResponseControllerTest extends TestCase
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
                 'token' => $token,
+            ],
+            [
+                'App' => env('APP_ID')
             ]
         );
         $result = json_decode($this->response->getContent());

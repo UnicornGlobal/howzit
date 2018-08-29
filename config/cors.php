@@ -10,7 +10,7 @@ return [
      */
     'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
-    'allowedHeaders' => ['Content-Type', 'Content-Length', 'Origin', 'X-Requested-With', 'Debug-Token', 'Registration-Access-Key', 'X-CSRF-Token', 'App', 'User-Agent', 'Authorization'],
+    'allowedHeaders' => ['Content-Type', 'Content-Length', 'Origin', 'X-Requested-With', 'Debug-Token', 'Registration-Access-Key', 'X-CSRF-Token', 'App', 'User-Agent', 'Authorization', 'Access-Control-Request-Headers', 'Access-Control-Request-Method'],
     'allowedMethods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     'exposedHeaders' => ['Authorization'],
     'maxAge' => 0,

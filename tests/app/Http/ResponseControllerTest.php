@@ -224,4 +224,32 @@ class ResponseControllerTest extends TestCase
         $this->assertResponseStatus(500);
         $this->assertEquals('Server error', $result->error);
     }
+
+    public function testChangeIp()
+    {
+        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'), [
+            'App' => env('APP_ID')
+        ]);
+        $result = json_decode($this->response->getContent());
+        $token = $result->token;
+
+        $this->call(
+            'POST',
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token,
+            ],
+            [
+                'App' => env('APP_ID')
+            ],
+            [],
+            ['REMOTE_ADDR' => '10.1.0.1']
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+    }
 }

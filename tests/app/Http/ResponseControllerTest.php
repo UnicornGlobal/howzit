@@ -1,8 +1,10 @@
 <?php
 
+use App\Form;
 use App\Token;
 use App\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Webpatser\Uuid\Uuid;
 
 class ResponseControllerTest extends TestCase
 {
@@ -227,26 +229,27 @@ class ResponseControllerTest extends TestCase
 
     public function testChangeIp()
     {
-        $this->actingAs($this->user)->get(sprintf('public/forms/%s', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'), [
-            'App' => env('APP_ID')
+        $form = Form::loadFromUuid('c1a440fe-0843-4da2-8839-e7ec6faee2c9');
+        Token::unguard();
+        $token = Token::create([
+            '_id' => Uuid::generate(4)->string,
+            'used' => false,
+            'form_id' => $form->id,
+            'user_ip' => '1.1.1.1',
+            'user_agent' => 'agent',
         ]);
-        $result = json_decode($this->response->getContent());
-        $token = $result->token;
 
-        $this->call(
-            'POST',
+        $this->post(
             sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
             [
                 'name' => 'King Hog',
                 'email' => 'kinghog@hogs.com',
                 'product' => 'tabbs',
-                'token' => $token,
+                'token' => $token->_id,
             ],
             [
-                'App' => env('APP_ID')
-            ],
-            [],
-            ['REMOTE_ADDR' => '10.1.0.1']
+                'App' => env('APP_ID'),
+            ]
         );
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(500);

@@ -66,6 +66,7 @@ class ResponseController extends Controller
         $token->response()->associate($response);
         // Invalidate the token
         $token->used = true;
+        $token->used_at = Carbon::now();
         $token->save();
 
         // Add each of the response elements

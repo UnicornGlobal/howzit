@@ -85,7 +85,7 @@ class FormController extends Controller
         return response()->json(['forms' => $forms], 200);
     }
 
-    public function getFormConfig($formId)
+    public function getFormConfig(Request $request, $formId)
     {
         $form = Form::loadFromUuid($formId);
 
@@ -98,6 +98,8 @@ class FormController extends Controller
         $token = new Token();
         $token->_id = Uuid::generate(4)->string;
         $token->form_id = $form->id;
+        $token->user_ip = $request->ip();
+        $token->user_agent = $request->userAgent();
 
         $token->save();
 

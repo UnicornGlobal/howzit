@@ -55,6 +55,11 @@ class ResponseController extends Controller
             return response()->json(['error' => 'Server error'], 500);
         }
 
+        if ($token->user_ip !== $request->ip() || $token->user_agent !== $request->userAgent()) {
+            Log::warning('User attempting to access token from new ip or agent');
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         // Create the response record
         $response = new Response();
         $response->form()->associate($form);

@@ -19,6 +19,7 @@ class Form extends BaseModel
         'deleted_by',
         'deleted_at',
         'user',
+        'email_alias',
     ];
 
     public function fields()

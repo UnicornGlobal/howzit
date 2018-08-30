@@ -1,5 +1,6 @@
 <?php
 
+use App\Token;
 use App\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
@@ -39,6 +40,11 @@ class ResponseControllerTest extends TestCase
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(201);
         $this->assertTrue($result->success);
+
+        $token = Token::loadFromUuid($token);
+        $this->assertEquals('127.0.0.1', $token->user_ip);
+        $this->assertEquals('Symfony', $token->user_agent);
+        $this->assertNotNull($token->used_at);
     }
 
     public function testInvalidToken()

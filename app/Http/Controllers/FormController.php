@@ -89,7 +89,7 @@ class FormController extends Controller
     {
         $form = Form::loadFromUuid($formId);
 
-        $form->makeHidden(['_id', 'response_template', 'created_at', 'updated_at', 'owner_email']);
+        $form->makeHidden(['_id', 'created_at', 'updated_at', 'owner_email']);
 
         $form->fields->each(function ($field) {
             $field->makeHidden(['_id', 'created_at', 'updated_at']);

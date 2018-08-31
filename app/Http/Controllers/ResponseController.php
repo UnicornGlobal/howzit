@@ -102,7 +102,7 @@ class ResponseController extends Controller
         };
 
         Mail::raw($fields, function ($message) use ($response) {
-            $message->from(sprintf($response->form->email_alias));
+            $message->from($response->form->email_alias);
             $message->to($response->form->owner_email);
         });
     }

@@ -13,11 +13,6 @@ class AddResponses extends Migration
      */
     public function up()
     {
-        if (env('APP_ENV') !== 'production') {
-            Schema::dropIfExists('responses');
-            Schema::dropIfExists('response_elements');
-        }
-
         Schema::create('responses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('_id')->unique();

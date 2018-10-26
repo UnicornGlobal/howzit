@@ -159,6 +159,7 @@ class ResponseControllerTest extends TestCase
         $this->actingAs($this->user)->post('api/forms', [
             'name' => 'Formed Form',
             'owner_email' => 'test@howzit.com',
+            'email_alias' => 'response@test.com',
             'fields' => [
                 [
                     'name' => 'email',

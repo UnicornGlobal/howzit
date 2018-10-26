@@ -13,11 +13,6 @@ class AddFormsAndFields extends Migration
      */
     public function up()
     {
-        if (env('APP_ENV') !== 'production') {
-            Schema::dropIfExists('forms');
-            Schema::dropIfExists('fields');
-        }
-
         Schema::create('forms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('_id')->unique();

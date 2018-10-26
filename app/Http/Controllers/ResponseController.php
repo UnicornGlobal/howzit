@@ -55,8 +55,15 @@ class ResponseController extends Controller
             return response()->json(['error' => 'Server error'], 500);
         }
 
-        if ($token->user_ip !== $request->ip() || $token->user_agent !== $request->userAgent()) {
-            Log::warning('User attempting to access token from new ip or agent');
+        if ($token->user_ip !== $request->ip()) {
+            Log::warning(
+                sprintf('User attempting to use token from new IP: Old IP: %s, new IP: %s', $token->user_ip, $request->ip())
+            );
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
+        if ($token->user_agent !== $request->userAgent()) {
+            Log::warning('User attempting to access token from different agent');
             return response()->json(['error' => 'Server error'], 500);
         }
 

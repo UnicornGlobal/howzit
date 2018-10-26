@@ -20,6 +20,7 @@ class FormController extends Controller
             $this->validate($request, [
                 'name' => 'required|string',
                 'owner_email' => 'required|email',
+                'email_alias' => 'required|email',
                 'fields' => 'required|array|min:1',
                 'fields.*' => 'required|array',
                 'fields.*.name' => 'required|string',
@@ -38,6 +39,7 @@ class FormController extends Controller
         $form = new Form();
         $form->_id = Uuid::generate(4)->string;
         $form->owner_email = $request->get('owner_email');
+        $form->email_alias = $request->get('email_alias');
         $form->name = $request->get('name');
         $form->created_by = Auth::user()->id;
         $form->updated_by = Auth::user()->id;
@@ -89,7 +91,7 @@ class FormController extends Controller
     {
         $form = Form::loadFromUuid($formId);
 
-        $form->makeHidden(['_id', 'response_template', 'created_at', 'updated_at', 'owner_email']);
+        $form->makeHidden(['_id', 'created_at', 'updated_at', 'owner_email']);
 
         $form->fields->each(function ($field) {
             $field->makeHidden(['_id', 'created_at', 'updated_at']);

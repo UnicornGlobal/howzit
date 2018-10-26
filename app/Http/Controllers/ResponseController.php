@@ -111,7 +111,7 @@ class ResponseController extends Controller
         );
 
         Config::set('mail.username', $response->form->user->mailgun_username);
-        Config::set('mail.password', Crypt::decrypt($response->form->user->mailgun_username));
+        Config::set('mail.password', Crypt::decrypt($response->form->user->mailgun_password));
 
         Mail::raw($fields, function ($message) use ($response, $cleanedSender) {
             $message->from(sprintf('%s@howzit.com', $cleanedSender));

@@ -1,7 +1,10 @@
 <?php
 
+use App\Form;
+use App\Token;
 use App\User;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Webpatser\Uuid\Uuid;
 
 class ResponseControllerTest extends TestCase
 {
@@ -39,6 +42,11 @@ class ResponseControllerTest extends TestCase
         $result = json_decode($this->response->getContent());
         $this->assertResponseStatus(201);
         $this->assertTrue($result->success);
+
+        $token = Token::loadFromUuid($token);
+        $this->assertEquals('127.0.0.1', $token->user_ip);
+        $this->assertEquals('Symfony', $token->user_agent);
+        $this->assertNotNull($token->used_at);
     }
 
     public function testInvalidToken()
@@ -213,6 +221,64 @@ class ResponseControllerTest extends TestCase
             ],
             [
                 'App' => env('APP_ID')
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+    }
+
+    public function testChangeIp()
+    {
+        $form = Form::loadFromUuid('c1a440fe-0843-4da2-8839-e7ec6faee2c9');
+        Token::unguard();
+        $token = Token::create([
+            '_id' => Uuid::generate(4)->string,
+            'used' => false,
+            'form_id' => $form->id,
+            'user_ip' => '1.1.1.1',
+            'user_agent' => 'agent',
+        ]);
+
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token->_id,
+            ],
+            [
+                'App' => env('APP_ID'),
+            ]
+        );
+        $result = json_decode($this->response->getContent());
+        $this->assertResponseStatus(500);
+        $this->assertEquals('Server error', $result->error);
+    }
+
+    public function testDifferentUserAgent()
+    {
+        $form = Form::loadFromUuid('c1a440fe-0843-4da2-8839-e7ec6faee2c9');
+        Token::unguard();
+        $token = Token::create([
+            '_id' => Uuid::generate(4)->string,
+            'used' => false,
+            'form_id' => $form->id,
+            'user_ip' => '127.0.0.1',
+            'user_agent' => 'agent',
+        ]);
+
+        $this->post(
+            sprintf('public/forms/%s/response', 'c1a440fe-0843-4da2-8839-e7ec6faee2c9'),
+            [
+                'name' => 'King Hog',
+                'email' => 'kinghog@hogs.com',
+                'product' => 'tabbs',
+                'token' => $token->_id,
+            ],
+            [
+                'App' => env('APP_ID'),
             ]
         );
         $result = json_decode($this->response->getContent());

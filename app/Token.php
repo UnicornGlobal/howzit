@@ -15,6 +15,9 @@ class Token extends BaseModel
         'created_by',
         'updated_by',
         'deleted_by',
+        'user_id',
+        'user_agent',
+        'used_at',
     ];
 
     public function response()

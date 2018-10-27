@@ -57,6 +57,18 @@ class ResponseController extends Controller
             return response()->json(['error' => 'Server error'], 500);
         }
 
+        if ($token->user_ip !== $request->ip()) {
+            Log::warning(
+                sprintf('User attempting to use token from new IP: Old IP: %s, new IP: %s', $token->user_ip, $request->ip())
+            );
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
+        if ($token->user_agent !== $request->userAgent()) {
+            Log::warning('User attempting to access token from different agent');
+            return response()->json(['error' => 'Server error'], 500);
+        }
+
         // Create the response record
         $response = new Response();
         $response->form()->associate($form);
@@ -68,6 +80,7 @@ class ResponseController extends Controller
         $token->response()->associate($response);
         // Invalidate the token
         $token->used = true;
+        $token->used_at = Carbon::now();
         $token->save();
 
         // Add each of the response elements

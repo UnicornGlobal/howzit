@@ -63,7 +63,7 @@ class RegistrationController extends BaseController
             'created_by' => 1,
             'updated_by' => 1,
             'confirm_code' => Uuid::generate(4),
-            'mailgun_username' => $details['mailgun_username'],
+            'mailgun_username' => Crypt::encrypt($details['mailgun_username']),
             'mailgun_password' => Crypt::encrypt($details['mailgun_password']),
         ]);
 

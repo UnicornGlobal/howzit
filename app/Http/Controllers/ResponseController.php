@@ -116,7 +116,7 @@ class ResponseController extends Controller
             $fields = sprintf("%s%s: %s\n", $fields, $key, $value);
         };
 
-        Config::set('mail.username', $response->form->user->mailgun_username);
+        Config::set('mail.username', Crypt::decrypt($response->form->user->mailgun_username));
         Config::set('mail.password', Crypt::decrypt($response->form->user->mailgun_password));
 
         Mail::raw($fields, function ($message) use ($response) {

@@ -9,6 +9,8 @@ use App\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
@@ -113,6 +115,9 @@ class ResponseController extends Controller
             $value = $element->answer;
             $fields = sprintf("%s%s: %s\n", $fields, $key, $value);
         };
+
+        Config::set('mail.username', Crypt::decrypt($response->form->user->mailgun_username));
+        Config::set('mail.password', Crypt::decrypt($response->form->user->mailgun_password));
 
         Mail::raw($fields, function ($message) use ($response) {
             $message->from($response->form->email_alias);

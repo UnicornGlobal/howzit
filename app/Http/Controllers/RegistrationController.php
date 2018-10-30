@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ConfirmAccountMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -23,7 +24,9 @@ class RegistrationController extends BaseController
             'password',
             'firstName',
             'lastName',
-            'email'
+            'email',
+            'mailgun_username',
+            'mailgun_password'
         );
 
         $this->validate($request, [
@@ -32,6 +35,8 @@ class RegistrationController extends BaseController
             'firstName' => 'required|string',
             'lastName' => 'required|string',
             'email' => 'required|email|distinct|unique:users',
+            'mailgun_username' => 'required|string',
+            'mailgun_password' => 'required|string',
         ]);
 
         try {
@@ -57,7 +62,9 @@ class RegistrationController extends BaseController
             'email' => $details['email'],
             'created_by' => 1,
             'updated_by' => 1,
-            'confirm_code' => Uuid::generate(4)
+            'confirm_code' => Uuid::generate(4),
+            'mailgun_username' => Crypt::encrypt($details['mailgun_username']),
+            'mailgun_password' => Crypt::encrypt($details['mailgun_password']),
         ]);
 
         $this->addRole(Role::where('name', 'user')->first()->_id, $newUser);

@@ -12,7 +12,8 @@ and add custom email response templates.
 
 - `composer install`
 - `mysql -u root -e 'create schema howzit;'`
-- `php artisan migrate --seed`
+
 - `cp .env.example .env`
 - Populate `.env` with required data.
+- `php artisan migrate --seed`
 - `php -S localhost:8005 -t ./public`

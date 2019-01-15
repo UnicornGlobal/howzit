@@ -21,7 +21,7 @@ class RoleMiddlewareTest extends TestCase
         $this->post('/login', [
             'username' => 'admin',
             'password' => 'admin',
-        ], [ 'Debug-Token' => env('DEBUG_TOKEN')]);
+        ], [ 'Debug-Token' => env('DEBUG_KEY')]);
 
         $this->testUserId = User::where('id', 2)->first()->_id;
         $this->actingAs(Auth::user())->get('api/roles');
@@ -48,7 +48,7 @@ class RoleMiddlewareTest extends TestCase
 
         $this->actingAs($user)->get(
             sprintf('api/%s/%s/%s', 'users', $this->testUserId, 'roles'),
-            ['Debug-Token' => env('DEBUG_TOKEN')]
+            ['Debug-Token' => env('DEBUG_KEY')]
         );
         $this->assertResponseStatus(401);
         $this->assertEquals('{"error":"Incorrect Role"}', $this->response->getContent());

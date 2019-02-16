@@ -40,8 +40,6 @@ class Users extends Seeder
             'email' => env('SYSTEM_USER_EMAIL'),
             'created_by' => 1,
             'updated_by' => 1,
-            'mailgun_username' => Crypt::encrypt('x'),
-            'mailgun_password' => Crypt::encrypt('x'),
         ]);
 
         /**
@@ -61,8 +59,6 @@ class Users extends Seeder
                 'email' => 'developer@example.com',
                 'created_by' => 1,
                 'updated_by' => 1,
-                'mailgun_username' => Crypt::encrypt('seeded_user'),
-                'mailgun_password' => Crypt::encrypt('seeded_password'),
             ]);
 
             User::firstOrCreate([
@@ -76,8 +72,6 @@ class Users extends Seeder
                 'email' => 'admin@example.com',
                 'created_by' => 1,
                 'updated_by' => 1,
-                'mailgun_username' => Crypt::encrypt('admin_user'),
-                'mailgun_password' => Crypt::encrypt('admin_password'),
             ]);
         }
     }

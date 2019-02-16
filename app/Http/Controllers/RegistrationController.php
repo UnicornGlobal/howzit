@@ -24,9 +24,7 @@ class RegistrationController extends BaseController
             'password',
             'firstName',
             'lastName',
-            'email',
-            'mailgun_username',
-            'mailgun_password'
+            'email'
         );
 
         $this->validate($request, [
@@ -34,16 +32,13 @@ class RegistrationController extends BaseController
             'password' => 'required|string|min:8',
             'firstName' => 'required|string',
             'lastName' => 'required|string',
-            'email' => 'required|email|distinct|unique:users',
-            'mailgun_username' => 'required|string',
-            'mailgun_password' => 'required|string',
+            'email' => 'required|email|distinct|unique:users'
         ]);
 
         try {
             $newUserId = $this->createUser($details);
             return response()->json(['_id' => $newUserId], 201);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['error' => 'Registration Failed'], 403);
         }
     }
@@ -62,9 +57,7 @@ class RegistrationController extends BaseController
             'email' => $details['email'],
             'created_by' => 1,
             'updated_by' => 1,
-            'confirm_code' => Uuid::generate(4),
-            'mailgun_username' => Crypt::encrypt($details['mailgun_username']),
-            'mailgun_password' => Crypt::encrypt($details['mailgun_password']),
+            'confirm_code' => Uuid::generate(4)
         ]);
 
         $this->addRole(Role::where('name', 'user')->first()->_id, $newUser);
@@ -82,14 +75,13 @@ class RegistrationController extends BaseController
             $user = User::where('confirm_code', $token)->first();
             $user->confirmed_at = date("Y-m-d H:i:s");
             $user->save();
-            // TODO this should render a response
             return response()->json(['result' => 'OK'], 200);
         } catch (\Exception $e) {
             throw new \Exception('There was a problem with the code.');
         }
     }
 
-    //Assigning a role to the newly created user
+    // Assigning a role to the newly created user
     public function addRole($roleId, $newUser)
     {
         try {

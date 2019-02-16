@@ -85,6 +85,7 @@ class ResponseController extends Controller
 
         // Add each of the response elements
         $elements = [];
+
         // Mass insert doesn't support timestamps
         $now = Carbon::now();
         foreach ($form->fields as $field) {
@@ -99,6 +100,7 @@ class ResponseController extends Controller
             ];
             $elements[] = $element;
         }
+
         ResponseElement::insert($elements);
 
         $this->emailResponseToOwner($response);
@@ -115,9 +117,6 @@ class ResponseController extends Controller
             $value = $element->answer;
             $fields = sprintf("%s%s: %s\n", $fields, $key, $value);
         };
-
-        Config::set('mail.username', Crypt::decrypt($response->form->user->mailgun_username));
-        Config::set('mail.password', Crypt::decrypt($response->form->user->mailgun_password));
 
         Mail::raw($fields, function ($message) use ($response) {
             $message->from($response->form->email_alias);

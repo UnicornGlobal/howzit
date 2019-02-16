@@ -70,8 +70,6 @@ class RegistrationControllerTest extends TestCase
             'firstName' => 'Another',
             'lastName' => 'User',
             'email' => '2+developer@example.com',
-            'mailgun_username' => 'test',
-            'mailgun_password' => 'password',
         ], [ 'Registration-Access-Key' => env('REGISTRATION_ACCESS_KEY')]);
 
         $result = json_decode($this->response->getContent());

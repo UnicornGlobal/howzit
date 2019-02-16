@@ -57,9 +57,7 @@ class User extends BaseModel implements
         'api_key',
         'confirm_code',
         'confirmed_at',
-        'deleted_at',
-        'mailgun_username',
-        'mailgun_password',
+        'deleted_at'
     ];
 
     protected $appends = [
